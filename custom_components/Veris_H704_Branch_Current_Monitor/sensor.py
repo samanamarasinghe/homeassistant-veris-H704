@@ -1,7 +1,7 @@
 import logging
 import asyncio
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import POWER_WATT, ENERGY_KILO_WATT_HOUR
+from homeassistant.const import UnitOfPower, UnitOfEnergy
 from homeassistant.helpers.update_coordinator import CoordinatorEntity, DataUpdateCoordinator
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_registry import async_get_registry
@@ -20,7 +20,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
         baudrate = entry.data.get("baudrate")
         slave_id = entry.data.get("slave_id")
 
-        
         modbus_interface = VerisModbusInterface(port, baudrate, slave_id)
         await modbus_interface.connect()
 
@@ -75,10 +74,9 @@ class VerisPowerSensor(CoordinatorEntity, SensorEntity):
         self.circuit_id = circuit_id
         self._attr_name = f"Veris Circuit {circuit_id}"
         self._attr_unique_id = f"veris_circuit_{circuit_id}"
-        self._attr_native_unit_of_measurement = POWER_WATT
+        self._attr_native_unit_of_measurement = UnitOfPower.WATT
         self._attr_device_class = "power"
-        self._attr_state_class = "measurement"  # Real-time measurement
-        self._attr_entity_category = EntityCategory.DIAGNOSTIC  # Optional
+        self._attr_state_class = "measurement"
 
     @property
     def native_value(self):
@@ -93,7 +91,7 @@ class VerisTotalPowerSensor(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator)
         self._attr_name = "Veris Total Power"
         self._attr_unique_id = "veris_total_power"
-        self._attr_native_unit_of_measurement = POWER_WATT
+        self._attr_native_unit_of_measurement = UnitOfPower.WATT
         self._attr_device_class = "power"
         self._attr_state_class = "measurement"
 
@@ -110,7 +108,7 @@ class VerisEnergySensor(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator)
         self._attr_name = "Veris Energy Consumption"
         self._attr_unique_id = "veris_energy_consumption"
-        self._attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+        self._attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
         self._attr_device_class = "energy"
         self._attr_state_class = "total_increasing"
 

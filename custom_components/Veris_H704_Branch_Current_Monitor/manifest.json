@@ -1,7 +1,7 @@
 {
   "domain": "veris_branch_power_monitor",
   "name": "Veris H704-42 Branch Power Monitor",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "documentation": "https://github.com/samanamarasinghe/homeassistant-components/tree/main/custom_components/veris_branch_power_monitor",
   "dependencies": ["modbus"],
   "codeowners": ["@samanamarasinghe"],
